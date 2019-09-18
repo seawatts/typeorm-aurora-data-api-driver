@@ -120,4 +120,40 @@ describe('aurora data api > simple queries', () => {
 
     await connection.close()
   })
+
+  it('insert query builder - should generate ignore statement', async () => {
+    const connection = await createConnection({
+      type: 'aurora-data-api',
+      database: process.env.database!,
+      secretArn: process.env.secretArn!,
+      resourceArn: process.env.resourceArn!,
+      region: process.env.region!,
+      entities: [Post],
+      synchronize: true,
+      logging: true,
+    })
+
+    const post = new Post()
+
+    post.title = 'My First Post'
+    post.text = 'Post Text'
+    post.likesCount = 4
+    post.publishedAt = new Date()
+
+    const secondPost = new Post()
+
+    secondPost.title = 'My Second Post'
+    secondPost.text = 'Post Text'
+    secondPost.likesCount = 5
+    secondPost.publishedAt = new Date()
+
+    const queryString = await connection.createQueryBuilder()
+      .insert()
+      .into(Post)
+      .values([post, secondPost])
+      .orIgnore()
+      .getQuery()
+
+    expect(queryString).toBe('insert into something something')
+  })
 })
