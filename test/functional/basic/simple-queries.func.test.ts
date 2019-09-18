@@ -154,6 +154,6 @@ describe('aurora data api > simple queries', () => {
       .orIgnore()
       .getQuery()
 
-    expect(queryString).toBe('insert into something something')
+    expect(queryString).toBe('INSERT  IGNORE INTO `aurora_data_api_test_post`(`title`, `text`, `likesCount`, `publishedAt`) VALUES (?, ?, ?, ?), (?, ?, ?, ?)')
   })
 })
