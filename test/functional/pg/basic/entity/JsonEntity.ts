@@ -11,7 +11,7 @@ export class JsonEntity {
   // -------------------------------------------------------------------------
 
   @Column('json', { nullable: true })
-  json!: Object | null
+  json?: Object | null
 
   @Column('jsonb')
   jsonb!: Object

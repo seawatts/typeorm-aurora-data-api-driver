@@ -1314,7 +1314,10 @@ var PostgresQueryTransformer = /** @class */ (function (_super) {
         }
         return parameters.map(function (parameter, index) {
             if (parameter === undefined) {
-                return parameter;
+                return {
+                    name: "param_" + (index + 1),
+                    value: 'undefined',
+                };
             }
             if (typeof parameter === 'object' && (parameter === null || parameter === void 0 ? void 0 : parameter.value)) {
                 return (__assign({ name: "param_" + (index + 1) }, parameter));

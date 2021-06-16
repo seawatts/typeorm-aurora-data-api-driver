@@ -432,4 +432,27 @@ describe('aurora data api pg > simple queries', () => {
       expect(loadedJsonEntity.jsonb).toEqual(jsonEntity.jsonb)
     })
   })
+
+  it('should handle undefined values', async () => {
+    await useCleanDatabase('postgres', { entities: [JsonEntity] }, async (connection) => {
+      const jsonEntity = new JsonEntity()
+
+      jsonEntity.json = { id: 1, name: 'Post' }
+      jsonEntity.jsonb = { id: 1, name: 'Post' }
+
+      const newJsonEntity = await connection.getRepository(JsonEntity).save(jsonEntity)
+      await connection.getRepository(JsonEntity).update(newJsonEntity.id, { json: undefined })
+
+      const loadedJsonEntity = (await connection.getRepository(JsonEntity).findOne(newJsonEntity.id))!
+
+      // Assert
+      expect(newJsonEntity).toBeTruthy()
+      expect(newJsonEntity.json).toEqual(jsonEntity.json)
+      expect(newJsonEntity.jsonb).toEqual(jsonEntity.jsonb)
+
+      expect(loadedJsonEntity).toBeTruthy()
+      expect(loadedJsonEntity.json).toEqual(null)
+      expect(loadedJsonEntity.jsonb).toEqual(jsonEntity.jsonb)
+    })
+  })
 })
