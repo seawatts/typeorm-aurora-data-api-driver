@@ -49,9 +49,7 @@ export class PostgresQueryTransformer extends QueryTransformer {
           cast: 'DECIMAL',
         }
       case 'simple-array':
-        return {
-          value: simpleArrayToString(value),
-        }
+        return simpleArrayToString(value)
       case 'simple-json':
       case 'json':
       case 'jsonb':
@@ -171,7 +169,7 @@ export class PostgresQueryTransformer extends QueryTransformer {
         }
       }
 
-      if (typeof parameter === 'object' && parameter?.value) {
+      if (typeof parameter === 'object' && parameter?.value !== undefined) {
         return ({
           name: `param_${index + 1}`,
           ...parameter,

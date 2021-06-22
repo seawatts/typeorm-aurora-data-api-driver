@@ -1206,9 +1206,7 @@ var PostgresQueryTransformer = /** @class */ (function (_super) {
                     cast: 'DECIMAL',
                 };
             case 'simple-array':
-                return {
-                    value: simpleArrayToString(value),
-                };
+                return simpleArrayToString(value);
             case 'simple-json':
             case 'json':
             case 'jsonb':
@@ -1319,7 +1317,7 @@ var PostgresQueryTransformer = /** @class */ (function (_super) {
                     value: 'undefined',
                 };
             }
-            if (typeof parameter === 'object' && (parameter === null || parameter === void 0 ? void 0 : parameter.value)) {
+            if (typeof parameter === 'object' && (parameter === null || parameter === void 0 ? void 0 : parameter.value) !== undefined) {
                 return (__assign({ name: "param_" + (index + 1) }, parameter));
             }
             return {
